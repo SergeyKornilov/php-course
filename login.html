@@ -35,7 +35,73 @@
         </form>
     </div>
 </div>
+<div class="container">
+<h1>Rock Paper Scissors</h1>
 
+<p id="welcome"></p>
+
+<form id="rpsForm" method="post">
+    <select id="humanPlay" name="human" class="form-control" style="width:200px; display:inline-block;">
+        <option value="-1">Select</option>
+        <option value="0">Rock</option>
+        <option value="1">Paper</option>
+        <option value="2">Scissors</option>
+        <option value="3">Test</option>
+    </select>
+    <input type="button" value="Play" class="btn btn-primary" onclick="play()">
+    <input type="button" value="Logout" class="btn btn-danger" onclick="logout()">
+</form>
+
+<pre id="result">Please select a strategy and press Play.</pre>
+</div>
+
+<script>
+const NAMES = ["Rock", "Paper", "Scissors"];
+let loggedInUser = null;
+
+// Получаем имя пользователя из URL-параметра
+const params = new URLSearchParams(window.location.search);
+//if (params.has('name')) {
+//    loggedInUser = params.get('name');
+//    document.getElementById('welcome').textContent = 'Welcome: ' + loggedInUser;
+//} else {
+//    document.body.innerHTML = "<h2>Name parameter missing</h2>";
+//}
+
+function logout() {
+    window.location.href = 'login.html';
+}
+
+function check(computer, human) {
+    if (computer === human) return "Tie";
+    if ((human - computer + 3) % 3 === 1) return "You Win";
+    return "You Lose";
+}
+
+function play() {
+    if (!loggedInUser) return;
+
+    const humanChoice = document.getElementById('humanPlay').value;
+    const resultDiv = document.getElementById('result');
+    resultDiv.textContent = '';
+
+    if (humanChoice === "-1") return;
+
+    if (humanChoice === "3") { // Test
+        for (let c = 0; c < 3; c++) {
+            for (let h = 0; h < 3; h++) {
+                const r = check(c, h);
+                resultDiv.textContent += `Human=${NAMES[h]} Computer=${NAMES[c]} Result=${r}\n`;
+            }
+        }
+    } else {
+        const human = parseInt(humanChoice);
+        const computer = Math.floor(Math.random() * 3);
+        const outcome = check(computer, human);
+        resultDiv.textContent = `Your Play=${NAMES[human]} Computer Play=${NAMES[computer]} Result=${outcome}`;
+    }
+}
+</script>
     
 
 <script>
