@@ -2,35 +2,48 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Rock Paper Scissors Game cbfb4718</title>
+<title>Dr. Chuck's Rock, Paper, Scissors Game cbfb4718</title>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+<!-- Custom styles for this template -->
+<link href="starter-template.css" rel="stylesheet">
+
 </head>
 <body>
 <div class="container">
-    <h1>Rock Paper Scissors</h1>
-    <p id="welcome"></p>
+<h1>Rock Paper Scissors</h1>
 
-    <select id="humanPlay">
-        <option value="">--Choose--</option>
+<p id="welcome"></p>
+
+<form id="rpsForm">
+    <select id="humanPlay" name="human" class="form-control" style="width:200px; display:inline-block;">
+        <option value="-1">Select</option>
         <option value="0">Rock</option>
         <option value="1">Paper</option>
         <option value="2">Scissors</option>
-        <option value="test">Test</option>
+        <option value="3">Test</option>
     </select>
-    <button onclick="play()">Play</button>
-    <button onclick="logout()">Logout</button>
+    <input type="button" value="Play" class="btn btn-primary" onclick="play()">
+    <input type="button" value="Logout" class="btn btn-danger" onclick="logout()">
+</form>
 
-    <pre id="result"></pre>
+<pre id="result">Please select a strategy and press Play.</pre>
 </div>
 
 <script>
 const NAMES = ["Rock", "Paper", "Scissors"];
 let loggedInUser = null;
 
-// Get user from URL parameter
+// Получаем имя пользователя из URL-параметра
 const params = new URLSearchParams(window.location.search);
 if (params.has('name')) {
     loggedInUser = params.get('name');
-    document.getElementById('welcome').textContent = 'Welcome, ' + loggedInUser;
+    document.getElementById('welcome').textContent = 'Welcome: ' + loggedInUser;
 } else {
     document.body.innerHTML = "<h2>Name parameter missing</h2>";
 }
@@ -52,18 +65,18 @@ function play() {
     const resultDiv = document.getElementById('result');
     resultDiv.textContent = '';
 
-    if (humanChoice === "") return;
+    if (humanChoice === "-1") return;
 
-    if (humanChoice === "test") {
-        for (let c=0; c<3; c++) {
-            for (let h=0; h<3; h++) {
-                const r = check(c,h);
+    if (humanChoice === "3") { // Test
+        for (let c = 0; c < 3; c++) {
+            for (let h = 0; h < 3; h++) {
+                const r = check(c, h);
                 resultDiv.textContent += `Human=${NAMES[h]} Computer=${NAMES[c]} Result=${r}\n`;
             }
         }
     } else {
         const human = parseInt(humanChoice);
-        const computer = Math.floor(Math.random()*3);
+        const computer = Math.floor(Math.random() * 3);
         const outcome = check(computer, human);
         resultDiv.textContent = `Your Play=${NAMES[human]} Computer Play=${NAMES[computer]} Result=${outcome}`;
     }
